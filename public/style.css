@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'Spurs'; 
+    src: url('https://heplayforus-spurs.s3.us-east-2.amazonaws.com/Spurs.tff') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1, h2 {
+    font-family: 'Spurs', fallback, sans-serif;
+}
+
+h1 { font-size: 3em; }
+h2 { font-size: 2em; }
+header, section { text-align: center; justify-content: center; }
+p { text-align: left; }
+img.spur {
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: text-top;
+    margin-left: -0.5em;
+}
