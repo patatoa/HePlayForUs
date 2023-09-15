@@ -16,8 +16,8 @@ class DynamoDbRepository implements IDbRepository {
         this.client = new DynamoDBClient({
             region: "us-east-2",
             credentials: {
-                accessKeyId: Deno.env.get("AWS_ACCESS_KEY_ID"),
-                secretAccessKey: Deno.env.get("AWS_SECRET_ACCESS_KEY"),
+                accessKeyId: Deno.env.get("db_key"),
+                secretAccessKey: Deno.env.get("db_secret_key"),
             },
         });
     }
