@@ -24,7 +24,8 @@ const playerController = async (
       await session.createSession();
   }
   else if (reqMethod === 'POST') {
-      const decodedBody = decodeURIComponent(event.body || "");
+      // base 64 decode the body
+        const decodedBody = JSON.parse(atob(event.body ?? ""));
       console.log("event body", event.body);
       console.log("Decoded body", decodedBody);
       const userResponse = new PlayerAnswerResponse(decodedBody);
