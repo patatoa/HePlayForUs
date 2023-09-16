@@ -3,9 +3,16 @@ class PlayerAnswerResponse {
     public id: number;
 
     constructor(post: string) {
-        const body = new URLSearchParams(post);
-        this.answer = body.get("answer") === "true";
-        this.id = Number(body.get("id"));
+        const decodedBody = atob(post);
+        const regex = /id=(\d+)&answer=(true|false)/;
+        const match = decodedBody.match(regex);
+        if (!match) {
+            throw new Error("Could not parse body");
+        }
+        // Parse out the id and answer values
+        const [, id, answer] = match;
+        this.answer = answer === "true";
+        this.id = Number(id);
     }
 }
 export default PlayerAnswerResponse;

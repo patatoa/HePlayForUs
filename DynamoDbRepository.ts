@@ -50,7 +50,6 @@ class DynamoDbRepository implements IDbRepository {
                 Answers: []
             };
         }
-        console.log("Got session", response.Item);
         return SessionDtoService.convertDynamoDbSessionToCurrentFormat(response.Item);
     }
 }

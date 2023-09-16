@@ -43,4 +43,6 @@ jobs:
     - name: Deploy to Lambda
       run: |
           echo "Image uri: ${{ steps.build-image.outputs.image_uri }}"
-          aws lambda update-function-code --function-name heplayforus --image-uri ${{ steps.build-image.outputs.image_uri }}
+          aws lambda update-function-code --function-name heplayforus --image-uri ${{ steps.build-image.outputs.image_uri }} | jq '
+          if .Environment.Variables.db_key? then .Environment.Variables.db_key = "REDACTED" else . end |
+          if .Environment.Variables.db_secret_key? then .Environment.Variables.db_secret_key = "REDACTED" else . end'

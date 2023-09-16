@@ -14,9 +14,6 @@ export async function handler(
     event: APIGatewayProxyEventV2,
     _context: Context,
   ): Promise<APIGatewayProxyResultV2> {
-    //console log type of event
-    console.log(typeof event);
-    console.log(event);
     const regex = /.*\.\w+$/;
 
     if (regex.test(event.rawPath)) {
