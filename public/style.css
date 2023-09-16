@@ -10,6 +10,7 @@ h1, h2 {
 }
 
 h1 { font-size: 3em; }
+h1.title { white-space: nowrap;}
 h2 { font-size: 2em; }
 header, section { text-align: center; justify-content: center; }
 p { text-align: left; }
@@ -17,5 +18,8 @@ img.spur {
     width: 1.2em;
     height: 1.2em;
     vertical-align: text-top;
-    margin-left: -0.5em;
+    transform: translateX(-0.7em);
+}
+span.us{
+    line-break: strict;
 }
