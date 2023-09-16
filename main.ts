@@ -44,7 +44,7 @@ export async function handler(
 const staticFileHandler = async (req: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
     const BASE_PATH = "./public";
 
-    const filePath = BASE_PATH + new URL(req.rawPath).pathname;
+    const filePath = BASE_PATH + req.rawPath;
     console.log("Getting file", filePath, "for request", req.rawPath);
     let fileSize: number;
     try {
