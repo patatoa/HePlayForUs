@@ -45,6 +45,7 @@ const staticFileHandler = async (req: APIGatewayProxyEventV2): Promise<APIGatewa
     const BASE_PATH = "./public";
 
     const filePath = BASE_PATH + req.rawPath;
+    const fileExtension = req.rawPath.split(".").pop();
     console.log("Getting file", filePath, "for request", req.rawPath);
     let fileSize: number;
     try {
@@ -62,7 +63,7 @@ const staticFileHandler = async (req: APIGatewayProxyEventV2): Promise<APIGatewa
         body: body,
         headers: {
             "content-length": fileSize.toString(),
-            "content-type": contentType(filePath) || "application/octet-stream",
+            "content-type": contentType(fileExtension || "txt") || "application/octet-stream",
         },
     };
 }
