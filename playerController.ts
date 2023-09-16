@@ -25,10 +25,23 @@ const playerController = async (
   }
   else if (reqMethod === 'POST') {
       // base 64 decode the body
-        const decodedBody = JSON.parse(atob(event.body ?? ""));
+        const decodedBody = atob(event.body ?? "");
+        const regex = /id=(\d+)&answer=(true|false)/;
+        const match = decodedBody.match(regex);
+        if (!match) {
+            return { statusCode: 400 };
+        }
+        // Parse out the id and answer values
+        const [, id, answer] = match;
+        console.log("id", id);
+        console.log("answer", answer);
+
       console.log("event body", event.body);
       console.log("Decoded body", decodedBody);
-      const userResponse = new PlayerAnswerResponse(decodedBody);
+      const userResponse = {
+            id: parseInt(id),
+            answer: answer === 'true'
+        } as PlayerAnswerResponse;
       const player = PlayerRepo.getPlayer(userResponse.id);
       if (player) {
           previousAnswer = player.WasSpur === userResponse.answer;
