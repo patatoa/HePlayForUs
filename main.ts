@@ -20,7 +20,6 @@ export async function handler(
     const regex = /.*\.\w+$/;
 
     if (regex.test(event.rawPath)) {
-        console.log("We doing static file for {0}", event.rawPath);
         return staticFileHandler(event);
     }
 
@@ -46,13 +45,11 @@ const staticFileHandler = async (req: APIGatewayProxyEventV2): Promise<APIGatewa
 
     const filePath = BASE_PATH + req.rawPath;
     const fileExtension = req.rawPath.split(".").pop();
-    console.log("Getting file", filePath, "for request", req.rawPath);
     let fileSize: number;
     try {
         fileSize = (await Deno.stat(filePath)).size;
     } catch (e) {
         if (e instanceof Deno.errors.NotFound) {
-            console.log(req);
             return { statusCode: 404, };
         }
         return {statusCode: 500};

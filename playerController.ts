@@ -24,7 +24,10 @@ const playerController = async (
       await session.createSession();
   }
   else if (reqMethod === 'POST') {
-      const userResponse = new PlayerAnswerResponse(event.body || "");
+      const decodedBody = decodeURIComponent(event.body || "");
+      console.log("event body", event.body);
+      console.log("Decoded body", decodedBody);
+      const userResponse = new PlayerAnswerResponse(decodedBody);
       const player = PlayerRepo.getPlayer(userResponse.id);
       if (player) {
           previousAnswer = player.WasSpur === userResponse.answer;
