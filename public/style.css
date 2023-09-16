@@ -20,7 +20,7 @@ img.spur {
     width: 1.2em;
     height: 1.2em;
     vertical-align: text-top;
-    transform: translateX(-0.7em);
+    transform: margin-left -0.5em;
 }
 span.us{
     line-break: strict;
