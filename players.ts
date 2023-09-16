@@ -60,7 +60,7 @@ class PlayerRepo {
         {
             Id: 8,
             Name: 'Anderson Varejao',
-            ImagePath: 'https://heplayforus-spurs.s3.us-east-2.amazonaws.com/andersonvarejao.png',
+            ImagePath: 'https://heplayforus-spurs.s3.us-east-2.amazonaws.com/AndersonVarejao.png',
             WasSpur: false,
             FlavorText: 'Varejao is maybe the gold standard when it comes to utility bigs. He’ll bring effort on the boards and defense without making too many mistakes and knows where to be on offense. He proved to be valuable piece to several contending squads.',
             AnswerText: 'Varejao would have slotted in next to Duncan or Aldridge real nice, but alas.',
