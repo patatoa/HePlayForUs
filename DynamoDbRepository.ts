@@ -42,6 +42,14 @@ class DynamoDbRepository implements IDbRepository {
             },
         });
         const response = await this.client.send(command);
+        if(!response.Item) {
+            return {
+                sessionid: sessionId,
+                Created: Date.now(),
+                LastUpdated: Date.now(),
+                Answers: []
+            };
+        }
         console.log("Got session", response.Item);
         return SessionDtoService.convertDynamoDbSessionToCurrentFormat(response.Item);
     }

@@ -1,4 +1,4 @@
-import { lookup } from "https://deno.land/x/media_types@deprecated/mod.ts";
+import { contentType } from "https://deno.land/std@0.201.0/media_types/mod.ts";
 import {
     APIGatewayProxyEventV2,
     APIGatewayProxyResultV2,
@@ -45,6 +45,7 @@ const staticFileHandler = async (req: APIGatewayProxyEventV2): Promise<APIGatewa
     const BASE_PATH = "./public";
 
     const filePath = BASE_PATH + new URL(req.rawPath).pathname;
+    console.log("Getting file", filePath, "for request", req.rawPath);
     let fileSize: number;
     try {
         fileSize = (await Deno.stat(filePath)).size;
@@ -61,7 +62,7 @@ const staticFileHandler = async (req: APIGatewayProxyEventV2): Promise<APIGatewa
         body: body,
         headers: {
             "content-length": fileSize.toString(),
-            "content-type": lookup(filePath) || "application/octet-stream",
+            "content-type": contentType(filePath) || "application/octet-stream",
         },
     };
 }
