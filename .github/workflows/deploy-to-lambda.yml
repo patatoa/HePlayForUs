@@ -42,8 +42,7 @@ jobs:
 
     - name: Deploy to Lambda
       run: |
-        echo "${{ steps.build-image.outputs.image_uri }}"
-      run: |
+          echo "${{ steps.build-image.outputs.image_uri }}"echo "${{ steps.build-image.outputs.image_uri }}"
           aws lambda update-function-code --function-name heplayforus --image-uri ${{ steps.build-image.outputs.image_uri }}
       env:
         AWS_REGION: us-east-2
