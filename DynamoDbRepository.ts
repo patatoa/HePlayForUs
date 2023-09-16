@@ -2,7 +2,7 @@ import {
     DynamoDBClient,
     GetItemCommand,
     PutItemCommand,
-} from "https://esm.sh/@aws-sdk/client-dynamodb";
+} from "https://esm.sh/@aws-sdk/client-dynamodb@3.414.0";
 
 import IDbRepository from "./IDbRepository.d.ts";
 import SessionDtoService from "./SessionDtoService.ts";

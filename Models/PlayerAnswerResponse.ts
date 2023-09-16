@@ -2,9 +2,10 @@ class PlayerAnswerResponse {
     public answer: boolean;
     public id: number;
 
-    constructor(post: FormData) {
-        this.answer = post.get('answer') === 'true';
-        this.id = Number(post.get('id'));
+    constructor(post: string) {
+        const body = new URLSearchParams(post);
+        this.answer = body.get("answer") === "true";
+        this.id = Number(body.get("id"));
     }
 }
 export default PlayerAnswerResponse;

@@ -1,4 +1,4 @@
-import { html } from "https://deno.land/x/html/mod.ts";
+import { html } from "https://deno.land/x/html@v1.2.0/mod.ts";
 
 interface GameButtonProps {
     route: string;
@@ -20,7 +20,7 @@ interface CompletionCheckProps {
     TotalCount: number;
 }
 
-const GameButton = ({ route, text, classes }: GameButtonProps): html => (
+const GameButton = ({ route, text, classes }: GameButtonProps) => (
     html`
         <a
             ${classes ? `class="${classes}"` : ''}
@@ -33,7 +33,7 @@ const GameButton = ({ route, text, classes }: GameButtonProps): html => (
     `
 );
 
-const PlayerCard = ({ previousAnswer, Id, ImagePath, Name, previousAnswerText, FlavorText }: PlayerCardProps): html => (
+const PlayerCard = ({ previousAnswer, Id, ImagePath, Name, previousAnswerText, FlavorText }: PlayerCardProps) => (
     html`
         <section>
             ${previousAnswer !== undefined ? html`
@@ -58,7 +58,7 @@ const PlayerCard = ({ previousAnswer, Id, ImagePath, Name, previousAnswerText, F
 );
 
 
-const WelcomeBack = (): html => (
+const WelcomeBack = () => (
     html`
         <section class="center">
             <h2>Welcome Back!</h2>
@@ -69,7 +69,7 @@ const WelcomeBack = (): html => (
     `
 );
 
-const CompletionCheck = ({ CorrectCount, TotalCount }: CompletionCheckProps): html => (
+const CompletionCheck = ({ CorrectCount, TotalCount }: CompletionCheckProps) => (
     html`
         <h2> You answered ${CorrectCount} out of ${TotalCount} correctly.</h2>
         <p> But wait! There's still more vaguely familiar players! Would you like to continue?</p>
@@ -77,7 +77,7 @@ const CompletionCheck = ({ CorrectCount, TotalCount }: CompletionCheckProps): ht
     `
 );
 
-const GameOver = ({ CorrectCount, TotalCount }: CompletionCheckProps): html => (
+const GameOver = ({ CorrectCount, TotalCount }: CompletionCheckProps) => (
     html`
         <section class="center">
             <h2> You answered ${CorrectCount} out of ${TotalCount} correctly.</h2>
@@ -87,7 +87,7 @@ const GameOver = ({ CorrectCount, TotalCount }: CompletionCheckProps): html => (
     `
 );
 
-const FirstWelcome = (): html => (
+const FirstWelcome = () => (
     html`
         <section>
             <p>The Spurs are a magnet for basketball talent. Their phonemonal streak of over 20 consecutive playoff appearences and 5 chammpionships in that time is due to the team's ability to identify and utilize valuable players. Their propensity to identify NBA talent oversees, find undrafted players that can contribute, and assimilate aging stars looking for one last chance at the trophy has meant quite a few peculiar and surprising alumns adorned the Silver & Black. Some you probably forgot about. There are also players that fit the Spurs' ethos so well you could <em>swear</em> called the AT&T Center home. How well do you know your last twenty years of Spurs history? Can you correctly identify whether or not these players played for the San Antonio Spurs or not?</p>
