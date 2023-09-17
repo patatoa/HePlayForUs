@@ -35,23 +35,20 @@ class SessionManager implements ISessionManager {
 
     public async appendToSession(answer: Answer): Promise<boolean> {
         await this.getSession();
-        console.log("Appending to session", this.currentSession);
         this.currentSession.Answers.push(answer);
         this.currentSession.LastUpdated = Date.now();
         return await this.updateSession(this.currentSession);
     }
 
     private async updateSession(updatedSession: Session): Promise<boolean> {
-        console.log("Updating session", updatedSession);
         try {
             await this.db.saveDocument(updatedSession);
         }
         catch (err) {
-            console.log("oops this an error", err);
+            console.error("oops this an error", err);
             return false;
         }
         this.currentSession = updatedSession;
-        console.log("Updated session", this.currentSession);
         return true;
     }
 
@@ -60,7 +57,6 @@ class SessionManager implements ISessionManager {
         if (!session) {
             return false;
         }
-        console.log("Has session", session.Answers.length);
         return session.Answers.length !== 0;
     }
 
@@ -72,12 +68,11 @@ class SessionManager implements ISessionManager {
         try {
             if (!this.currentSession) {
                 this.currentSession = await this.db.getDocument(this.session);
-                console.log("Got session", this.currentSession);
             }
             return this.currentSession;
         }
         catch (err) {
-            console.log("Error getting session", err);
+            console.error("Error getting session", err);
             return undefined;
         }
     }

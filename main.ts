@@ -20,8 +20,6 @@ export async function handler(
         return staticFileHandler(event);
     }
 
-    console.log("Event", event);
-
     const sessionManager = new SessionManager(event, new DynamoDbRepository());
     if (/\/session\/.*/.test(event.rawPath)) {
         return sessionController(event, sessionManager);
