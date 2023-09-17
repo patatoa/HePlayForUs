@@ -2,7 +2,7 @@ import {
     DynamoDBClient,
     GetItemCommand,
     PutItemCommand,
-} from "https://esm.sh/@aws-sdk/client-dynamodb";
+} from "https://esm.sh/@aws-sdk/client-dynamodb@3.414.0";
 
 import IDbRepository from "./IDbRepository.d.ts";
 import SessionDtoService from "./SessionDtoService.ts";
@@ -42,7 +42,14 @@ class DynamoDbRepository implements IDbRepository {
             },
         });
         const response = await this.client.send(command);
-        console.log("Got session", response.Item);
+        if(!response.Item) {
+            return {
+                sessionid: sessionId,
+                Created: Date.now(),
+                LastUpdated: Date.now(),
+                Answers: []
+            };
+        }
         return SessionDtoService.convertDynamoDbSessionToCurrentFormat(response.Item);
     }
 }

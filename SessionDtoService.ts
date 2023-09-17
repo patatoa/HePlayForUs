@@ -53,6 +53,7 @@ type DynamoDBList<T> = {
 
 type DynamoDBMap = {
     M: {
+        // deno-lint-ignore no-explicit-any
         [key: string]: DynamoDBString | DynamoDBNumber | DynamoDBBoolean | DynamoDBList<any>;
     };
 };
