@@ -6,9 +6,16 @@ const sessionController = async (
   _req: APIGatewayProxyEventV2,
   session: ISessionManager
 ) => {
+  let hasSession = false;
+  try {
+    hasSession = await session.hasSession();
+  } catch{
+    //
+  } 
+
   return {
     statusCode: 200,
-    body: (await session.hasSession()) ? WelcomeBack() : FirstWelcome(),
+    body: hasSession ? WelcomeBack() : FirstWelcome(),
   };
 };
 
