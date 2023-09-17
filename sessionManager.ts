@@ -10,8 +10,8 @@ class SessionManager implements ISessionManager {
     private currentSession!: Session;
     private db: IDbRepository;
 
-    private getRemoteAddress({requestContext}: APIGatewayProxyEventV2): string {
-        const connInfo = requestContext?.http?.sourceIp;
+    private getRemoteAddress({headers}: APIGatewayProxyEventV2): string {
+        const connInfo = headers["cloudfront-viewer-address"]
         if (!connInfo) {
             throw new Error("Could not get remote address");
         }
