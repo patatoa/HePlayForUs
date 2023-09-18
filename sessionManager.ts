@@ -71,7 +71,7 @@ class SessionManager implements ISessionManager {
     return !session || !session.Answers ? [] : session.Answers;
   }
   public getSessionString(): string {
-    return `session=${this.session}; Path=/; HttpOnly; SameSite=Strict; Secure`;
+    return `session=${this.session}; Path=/; HttpOnly; SameSite=Strict; Expires=${new Date(2030, 1, 1).toUTCString()}; Secure`;
   }
   private async getSession() {
     try {
