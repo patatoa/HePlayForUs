@@ -19,7 +19,6 @@ class SessionManager implements ISessionManager {
   }
 
   constructor(event: APIGatewayProxyEventV2, db: IDbRepository) {
-    console.log("cookies", event.cookies);
     const sessionCookie = event.cookies?.find((cookie) =>
       cookie.includes("session")
     );
