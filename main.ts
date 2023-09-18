@@ -25,6 +25,7 @@ export async function handler(
         statusCode: 200, 
         headers: {
             "content-type": "text/html; charset=utf-8"
-        }
+        },
+        cookies: [ sessionManager.getSessionString() ]
   };
 }

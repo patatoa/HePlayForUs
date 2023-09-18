@@ -6,81 +6,88 @@ import type { Session, Answer } from "./Session.d.ts";
 import IDbRepository from "./IDbRepository.d.ts";
 
 class SessionManager implements ISessionManager {
-    private session: string;
-    private currentSession!: Session;
-    private db: IDbRepository;
+  private session: string;
+  private currentSession!: Session;
+  private db: IDbRepository;
 
-    private getRemoteAddress({headers}: APIGatewayProxyEventV2): string {
-        const connInfo = headers["cloudfront-viewer-address"]
-        if (!connInfo) {
-            throw new Error("Could not get remote address");
-        }
-        return connInfo;
+  private getRemoteAddress({ headers }: APIGatewayProxyEventV2): string {
+    const connInfo = headers["cloudfront-viewer-address"];
+    if (!connInfo) {
+      throw new Error("Could not get remote address");
     }
+    return connInfo;
+  }
 
-    constructor(event: APIGatewayProxyEventV2, db: IDbRepository) {
-        this.session = this.hashIp(this.getRemoteAddress(event));
-        this.db = db;
-    }
+  constructor(event: APIGatewayProxyEventV2, db: IDbRepository) {
+    const sessionCookie = event.cookies?.find((cookie) =>
+      cookie.includes("session")
+    );
+    this.session = sessionCookie
+      ? sessionCookie.split("=")[1]
+      : this.hashIp(this.getRemoteAddress(event));
 
-    async createSession(): Promise<boolean> {
-        this.currentSession = {
-            sessionid: this.session,
-            Created: Date.now(),
-            LastUpdated: Date.now(),
-            Answers: []
-        };
-        return await this.updateSession(this.currentSession);
-    }
+    this.db = db;
+  }
 
-    public async appendToSession(answer: Answer): Promise<boolean> {
-        await this.getSession();
-        this.currentSession.Answers.push(answer);
-        this.currentSession.LastUpdated = Date.now();
-        return await this.updateSession(this.currentSession);
-    }
+  async createSession(): Promise<boolean> {
+    this.currentSession = {
+      sessionid: this.session,
+      Created: Date.now(),
+      LastUpdated: Date.now(),
+      Answers: [],
+    };
+    return await this.updateSession(this.currentSession);
+  }
 
-    private async updateSession(updatedSession: Session): Promise<boolean> {
-        try {
-            await this.db.saveDocument(updatedSession);
-        }
-        catch (err) {
-            console.error("oops this an error", err);
-            return false;
-        }
-        this.currentSession = updatedSession;
-        return true;
-    }
+  public async appendToSession(answer: Answer): Promise<boolean> {
+    await this.getSession();
+    this.currentSession.Answers.push(answer);
+    this.currentSession.LastUpdated = Date.now();
+    return await this.updateSession(this.currentSession);
+  }
 
-    public async hasSession(): Promise<boolean> {
-        const session = await this.getSession();
-        if (!session) {
-            return false;
-        }
-        return session.Answers.length !== 0;
+  private async updateSession(updatedSession: Session): Promise<boolean> {
+    try {
+      await this.db.saveDocument(updatedSession);
+    } catch (err) {
+      console.error("oops this an error", err);
+      return false;
     }
+    this.currentSession = updatedSession;
+    return true;
+  }
 
-    public async getPreviousAnswers(): Promise<Answer[]> {
-        const session = await this.getSession();
-        return !session || !session.Answers ? [] : session.Answers;
+  public async hasSession(): Promise<boolean> {
+    const session = await this.getSession();
+    if (!session) {
+      return false;
     }
-    private async getSession(){
-        try {
-            if (!this.currentSession) {
-                this.currentSession = await this.db.getDocument(this.session);
-            }
-            return this.currentSession;
-        }
-        catch (err) {
-            console.error("Error getting session", err);
-            return undefined;
-        }
-    }
+    return session.Answers.length !== 0;
+  }
 
-    private hashIp(clientIp: string): string {
-        const hash = createHash("sha256");
-        hash.update(clientIp);
-        return hash.toString();
+  public async getPreviousAnswers(): Promise<Answer[]> {
+    const session = await this.getSession();
+    return !session || !session.Answers ? [] : session.Answers;
+  }
+  public getSessionString(): string {
+    return `session=${this.session}; Path=/; HttpOnly; SameSite=Strict; Expires=${new Date(2030, 1, 1).toUTCString()}; Secure`;
+  }
+  private async getSession() {
+    try {
+      if (!this.currentSession) {
+        this.currentSession = await this.db.getDocument(this.session);
+      }
+      return this.currentSession;
+    } catch (err) {
+      console.error("Error getting session", err);
+      return undefined;
     }
+  }
+
+  private hashIp(clientIp: string): string {
+    const hash = createHash("sha256");
+    hash.update(clientIp);
+    return hash.toString();
+  }
 }
 export default SessionManager;
