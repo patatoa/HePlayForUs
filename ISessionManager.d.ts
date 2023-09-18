@@ -4,6 +4,7 @@ interface ISessionManager {
     hasSession(): Promise<boolean>;
     appendToSession(answer: Answer): Promise<boolean>;
     getPreviousAnswers(): Promise<Answer[]>;
+    getSessionString(): string;
 }
 
 export default ISessionManager;
